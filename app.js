@@ -78,28 +78,32 @@ function getLeads(onError, cc, options){
 	if(options && options.sleipnerUsername) {
 		var thisClauseIndex = whereClauses.push('Assigned_To__c INCLUDES (');
 
-		if(!Array.isArray(options.sleipnerUsername)) options.sleipnerUsername = [options.sleipnerUsername]);
+		if(!Array.isArray(options.sleipnerUsername)) options.sleipnerUsername = [options.sleipnerUsername];
 		
 		_.each(options.sleipnerUsername, function (username, arrayIndex) {
 			whereClauses[thisClauseIndex] += "'" + username + "'" + arrayIndex > 0 ? ',' : '';
-		}
+		});
 
-		whereClauses[thisClauseIndex] += ') '
+		whereClauses[thisClauseIndex] += ') ';
 
 	}
 
 	if(whereClauses.length > 0){
 		query += ' WHERE ';
 
-		_.each(whereClauses, function (clause){
-
-		})
+		_.each(whereClauses, function (clause, arrayIndex){
+			query += clause + (arrayIndex <  0 ? clause : '');
+		});
 	}
 
 
 	var query = "select Id, Assigned_To__c, IsDeleted, MasterRecordId, LastName, FirstName, Salutation, Name, RecordTypeId, Title, Company, Street, City, State, PostalCode, Country, Phone, Email, Website, Description, LeadSource, Status, Industry, Rating, AnnualRevenue, NumberOfEmployees, OwnerId, IsConverted, ConvertedDate, ConvertedAccountId, ConvertedContactId, ConvertedOpportunityId, IsUnreadByOwner, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, LastActivityDate, JigsawContactId, EmailBouncedReason, EmailBouncedDate, Partner_First_Name__c, Partner_Last_Name__c, Mobile_Number__c, Age__c, Partner_Age__c, Home_Phone__c, Industry_Superfund_Institution__c, Partner_Industry_Super_Fund_Institution__c, Partner_Industry_Super_Fund_Balance__c, SMSF_Balance__c, Partner_SMSF_Balance__c, Has_ASX_Shares__c, Has_Global_Markets_Shares__c, Registered_on_Australian_Do_Not_Call__c, Permission_To_Contact__c, Add_to_Sleipner_Do_Not_Call_register__c, Has_SMSF__c, Partner_Has_SMSF__c, Partner_Has_Industry_Super_Fund__c, Has_Industry_Super_Fund__c, Owns_Shares__c, Owns_Property__c, Owns_Residential_Property__c, Owns_Investment_Property__c, Investment_Term__c, Investment_Decision_Maker__c, Needs_Education__c, Needs_SMSF__c, Needs_PreAuth__c, Industry_Superfund_Comments__c, SMSF_Comments__c, Other_Investments_Comments__c, Financial_and_Lifestyle_Goals__c, Importance_Of_Goals__c, Is_the_Client_Motivated__c, Contact_Instructions__c, Additional_Notes__c, Join_Mailing_List__c, Approved_By__c, Industry_Superfund_Balance__c, Occupation__c, Partner_Occupation__c, Income_Bracket__c, Partner_Income_Bracket__c, Work_Phone__c from Lead WHERE Assigned_To__c INCLUDES ('adam.breen', 'russell.green', 'bob') ";  //"!= NULL";
 	// WHERE id='00Q9000000AmEJKEA3'";
 	org.query(query, oauth, function(err, resp){
+		if(err) console.log(err);
+		console.log(resp);
+
+	});
 }
 
 
